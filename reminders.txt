@@ -1,0 +1,2 @@
+10:40  Building an Offline Agentic Assistant for Android
+10:35  AI in Production: Sampling, Labeling and Detecting Drift Before Your Customers Do
