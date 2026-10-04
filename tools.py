@@ -1,6 +1,6 @@
 """The tools. Plain Python functions plus the descriptions the model sees.
 
-Everything is local except get_speaker_info, which searches the web.
+Everything is local except get_speaker_info and research_talk, which search the web.
 """
 import os
 from datetime import datetime
@@ -97,32 +97,45 @@ SPEAKER_BIOS = {
 _search_client = genai.Client(http_options=types.HttpOptions(timeout=15_000))
 
 
-def get_speaker_info(name: str) -> dict:
-    """Look a speaker up on the web. A tool can be anything, even another model call."""
-    result = {"name": name, "bio_from_programme": SPEAKER_BIOS.get(name)}
+def _search_the_web(prompt: str) -> dict:
+    """Ask Gemini with Google Search turned on. A tool can be anything, even another agent."""
     if os.environ.get("OFFLINE"):
-        return result
+        return {"web_error": "Offline mode, no web search."}
     try:
         response = _search_client.models.generate_content(
             model=MODEL,
-            contents=(
-                f"{name} is speaking at DevFest Pretoria 2026. In two or three sentences, "
-                "summarise their professional background: role, organisation, and the "
-                "technical work they are known for. Only use sources that clearly refer "
-                "to this person. If you can't find anything reliable, say so."
-            ),
+            contents=prompt,
             config=types.GenerateContentConfig(
                 tools=[types.Tool(google_search=types.GoogleSearch())],
                 automatic_function_calling=types.AutomaticFunctionCallingConfig(disable=True),
             ),
         )
-        result["from_the_web"] = response.text
         meta = response.candidates[0].grounding_metadata
         chunks = (meta.grounding_chunks or []) if meta else []
-        result["sources"] = [c.web.title for c in chunks[:3] if c.web]
+        return {"from_the_web": response.text,
+                "sources": [c.web.title for c in chunks[:3] if c.web]}
     except Exception as e:
-        result["web_error"] = f"Search failed ({type(e).__name__}), using the programme bio only."
-    return result
+        return {"web_error": f"Search failed ({type(e).__name__})."}
+
+
+def get_speaker_info(name: str) -> dict:
+    """Look a speaker up on the web, with the programme bio as a fallback."""
+    return {"name": name, "bio_from_programme": SPEAKER_BIOS.get(name), **_search_the_web(
+        f"{name} is speaking at DevFest Pretoria 2026. In two or three sentences, "
+        "summarise their professional background: role, organisation, and the "
+        "technical work they are known for. Only use sources that clearly refer "
+        "to this person. If you can't find anything reliable, say so."
+    )}
+
+
+def research_talk(title: str, speaker: str) -> dict:
+    """Look a talk's topic up on the web."""
+    return {"title": title, "speaker": speaker, **_search_the_web(
+        f'"{title}" is a talk by {speaker} at DevFest Pretoria 2026. In four or five '
+        "sentences, explain what the talk is likely to cover: the topic, the key "
+        "technologies and why it matters. Use the talk's abstract if you can find one. "
+        "If you can't, explain the topic itself and say no abstract was found."
+    )}
 
 
 def remind_me(title: str, start: str) -> dict:
@@ -154,8 +167,7 @@ GET_SCHEDULE = {
         "properties": {
             "track": {
                 "type": "string",
-                "enum": ["MAIN", "TRACK 1", "TRACK 2", "FORGE"],
-                "description": "Which track to look up.",
+                "description": "Which track to look up, for example MAIN or TRACK 1.",
             }
         },
         "required": ["track"],
@@ -185,6 +197,23 @@ GET_SPEAKER_INFO = {
         "type": "object",
         "properties": {"name": {"type": "string", "description": "Speaker's full name."}},
         "required": ["name"],
+    },
+}
+
+RESEARCH_TALK = {
+    "name": "research_talk",
+    "description": (
+        "Search the web for what a DevFest Pretoria 2026 talk is about: its topic, "
+        "the technologies involved and why it matters. Use the title and speaker "
+        "exactly as they appear in the schedule."
+    ),
+    "parameters_json_schema": {
+        "type": "object",
+        "properties": {
+            "title": {"type": "string", "description": "Talk title."},
+            "speaker": {"type": "string", "description": "Speaker's full name."},
+        },
+        "required": ["title", "speaker"],
     },
 }
 
@@ -223,6 +252,7 @@ REGISTRY = {
     "get_schedule": get_schedule,
     "minutes_between": minutes_between,
     "get_speaker_info": get_speaker_info,
+    "research_talk": research_talk,
     "remind_me": remind_me,
     "list_reminders": list_reminders,
 }
