@@ -51,10 +51,7 @@ SCHEDULE = {
 # The functions: this is the code that actually runs
 # ---------------------------------------------------------------------------
 def get_current_time() -> dict:
-    """Current time in Pretoria. Set DEMO_TIME=10:20 to freeze it for a demo."""
-    frozen = os.environ.get("DEMO_TIME")
-    if frozen:
-        return {"time": frozen, "timezone": "Africa/Johannesburg"}
+    """Current time in Pretoria."""
     now = datetime.now(ZoneInfo("Africa/Johannesburg"))
     return {"time": now.strftime("%H:%M"), "timezone": "Africa/Johannesburg"}
 

@@ -8,7 +8,7 @@ from tools import (GET_CURRENT_TIME, GET_SCHEDULE, MINUTES_BETWEEN,
 MAX_STEPS = 8
 
 question = " ".join(sys.argv[1:]) or (
-    "What's the next session in Track 1 at DevFest Pretoria, "
+    "What's next in the main hall at DevFest Pretoria, "
     "and how many minutes until it starts?"
 )
 

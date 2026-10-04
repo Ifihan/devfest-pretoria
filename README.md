@@ -9,7 +9,6 @@ python -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 export GEMINI_API_KEY=your_key_here          # get one at aistudio.google.com
 export GEMINI_MODEL=gemini-3.7-flash         # optional, this is the default
-export DEMO_TIME=10:20                       # optional, freezes "now" so the demo is predictable
 ```
 
 Needs Python 3.9 or newer.
@@ -26,8 +25,9 @@ Needs Python 3.9 or newer.
 Every script takes an optional question. Good ones for `03_agent_loop.py`:
 
 ```
-python 03_agent_loop.py "Who's giving the next Track 1 talk, and what have they worked on?"
-python 03_agent_loop.py "What's next in Track 2? Remind me about it."
+python 03_agent_loop.py "What's next in the main hall, and how many minutes until it starts?"
+python 03_agent_loop.py "Who's speaking in Track 2 right now, and what have they worked on?"
+python 03_agent_loop.py "When's the fireside chat? Remind me about it."
 python 03_agent_loop.py "When is lunch?"
 ```
 
