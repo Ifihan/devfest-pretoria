@@ -1,8 +1,8 @@
 """Demo 2. Two tools. The model picks which one.
 
-python 02_two_tools.py "What's on in the SCALE track today?"
+python 02_two_tools.py "What's on in Track 2 today?"
 python 02_two_tools.py "What time is it?"
-python 02_two_tools.py --vague "What's on in the SCALE track today?"   # bad descriptions
+python 02_two_tools.py --vague "What's on in Track 2 today?"   # bad descriptions
 """
 import sys
 from google.genai import types
@@ -13,7 +13,7 @@ from tools import (GET_CURRENT_TIME, GET_SCHEDULE,
 args = sys.argv[1:]
 vague = "--vague" in args
 args = [a for a in args if a != "--vague"]
-question = " ".join(args) or "What's on in the SCALE track today?"
+question = " ".join(args) or "What's on in Track 2 today?"
 
 declarations = ([VAGUE_GET_CURRENT_TIME, VAGUE_GET_SCHEDULE] if vague
                 else [GET_CURRENT_TIME, GET_SCHEDULE])

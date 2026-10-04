@@ -3,7 +3,7 @@ import sys
 from config import client, MODEL, show
 
 question = " ".join(sys.argv[1:]) or (
-    "What's the next session in the BUILD track at DevFest Pretoria, "
+    "What's the next session in Track 1 at DevFest Pretoria, "
     "and how many minutes until it starts?"
 )
 

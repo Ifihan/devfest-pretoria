@@ -11,37 +11,38 @@ from google.genai import types
 from config import MODEL
 
 # ---------------------------------------------------------------------------
-# The data: the DevFest Pretoria 2026 programme (from the draft)
+# The data: the DevFest Pretoria 2026 programme
 # ---------------------------------------------------------------------------
 SCHEDULE = {
     "MAIN": [
+        {"start": "08:30", "end": "09:00", "title": "Registration, Networking and Welcome", "speaker": ""},
         {"start": "09:00", "end": "09:20", "title": "Opening and Welcome to DevFest", "speaker": ""},
-        {"start": "09:20", "end": "09:50", "title": "Opening Keynote: Build, Secure, Scale in the Agentic Era", "speaker": "Shiksha Ramgovind (Absa)"},
+        {"start": "09:20", "end": "09:50", "title": "Opening Keynote: When Intelligence Is No Longer Scarce. Why Adaptability Will Define the Agentic Era", "speaker": "Shiksha Ramgovind (Absa)"},
         {"start": "11:10", "end": "11:20", "title": "Short Break", "speaker": ""},
         {"start": "12:15", "end": "12:25", "title": "Group Photo", "speaker": ""},
         {"start": "12:25", "end": "13:15", "title": "Lunch and Networking", "speaker": ""},
-        {"start": "15:15", "end": "15:35", "title": "Fireside Chat: Build, Secure, Scale", "speaker": ""},
+        {"start": "15:05", "end": "15:15", "title": "Transition back to the main hall", "speaker": ""},
+        {"start": "15:15", "end": "15:35", "title": "Fireside Chat: Build, Secure, Scale: Developers and Builders in the Agentic Era", "speaker": ""},
         {"start": "15:35", "end": "15:50", "title": "Vote of Thanks and Closing", "speaker": ""},
     ],
-    "BUILD": [
+    "TRACK 1": [
         {"start": "10:00", "end": "10:35", "title": "Under the Hood: Flutter Fundamentals for New App Developers", "speaker": "Sylvia Dieckmann"},
-        {"start": "10:40", "end": "11:20", "title": "Building an Offline Agentic Assistant for Android", "speaker": "Johan van Rooyen"},
-        {"start": "14:30", "end": "15:05", "title": "AI on Android: Tap into On-Device Generative AI with AICore", "speaker": "Tashinga Pemhiwa"},
-        {"start": "14:45", "end": "15:20", "title": "Reification of Application Intent as an Executable Intermediate Representation for Agentic Systems", "speaker": "Gugulethu Nyoni"},
-    ],
-    "APPLY": [
-        {"start": "10:00", "end": "10:40", "title": "Giving Your Model Hands Then Setting It Loose", "speaker": "Ifihanagbara Olusheye"},
+        {"start": "10:35", "end": "11:10", "title": "Building an Offline Agentic Assistant for Android", "speaker": "Johan van Rooyen"},
         {"start": "11:20", "end": "11:55", "title": "The Cost of AI FOMO: How Hype is Burning Businesses", "speaker": "Thabang Ledwaba"},
-        {"start": "11:20", "end": "11:55", "title": "The Blueprint Before The Build", "speaker": "Symphorose Tshibombi"},
         {"start": "11:55", "end": "12:15", "title": "Trust, Tracking, and Trust Boundaries: A Guide to Thinking Like an Attacker", "speaker": "Refiloe Mokopakgosi"},
-    ],
-    "SCALE": [
-        {"start": "10:35", "end": "11:10", "title": "AI in Production: Sampling, Labeling and Detecting Drift Before Your Customers Do", "speaker": "Akshata Mohanty"},
         {"start": "13:15", "end": "14:30", "title": "Orchestrating Parallel Agents with Antigravity 2.0 and Gemini 3.7 Flash", "speaker": "Gabriel Agbobli"},
-        {"start": "13:30", "end": "14:45", "title": "Evaluating Generative AI with the Gemini Enterprise Agent Platform", "speaker": "Thamu Mnyulwa"},
+        {"start": "14:30", "end": "15:05", "title": "Giving Your Model Hands Then Setting It Loose", "speaker": "Ifihanagbara Olusheye"},
+    ],
+    "TRACK 2": [
+        {"start": "10:00", "end": "10:35", "title": "AI in Production: Sampling, Labeling and Detecting Drift Before Your Customers Do", "speaker": "Akshata Mohanty"},
+        {"start": "10:35", "end": "11:10", "title": "Evaluating Generative AI with the Gemini Enterprise Agent Platform", "speaker": "Thamu Mnyulwa"},
+        {"start": "11:20", "end": "11:55", "title": "The Blueprint Before The Build", "speaker": "Symphorose Tshibombi"},
+        {"start": "11:55", "end": "12:15", "title": "Entrepreneurship Talk", "speaker": "CodeVault"},
+        {"start": "13:15", "end": "14:30", "title": "AI on Android: Tap into On-Device Generative AI with AICore", "speaker": "Tashinga Pemhiwa"},
+        {"start": "14:30", "end": "15:05", "title": "Reification of Application Intent as an Executable Intermediate Representation for Agentic Systems", "speaker": "Gugulethu Nyoni"},
     ],
     "FORGE": [
-        {"start": "13:15", "end": "15:20", "title": "Buildathon", "speaker": "Kananelo and the Forge Team"},
+        {"start": "13:15", "end": "15:05", "title": "Buildathon", "speaker": "Kananelo and the Forge Team"},
     ],
 }
 
@@ -148,14 +149,15 @@ GET_SCHEDULE = {
     "description": (
         "Get the DevFest Pretoria 2026 sessions in one track, with each session's "
         "start and end time (HH:MM), title and speaker. MAIN holds everything "
-        "for all attendees: opening, keynote, breaks, lunch and closing."
+        "for all attendees: registration, opening, keynote, breaks, lunch and closing. "
+        "TRACK 1 and TRACK 2 run in parallel. FORGE is the buildathon."
     ),
     "parameters_json_schema": {
         "type": "object",
         "properties": {
             "track": {
                 "type": "string",
-                "enum": ["MAIN", "BUILD", "APPLY", "SCALE", "FORGE"],
+                "enum": ["MAIN", "TRACK 1", "TRACK 2", "FORGE"],
                 "description": "Which track to look up.",
             }
         },

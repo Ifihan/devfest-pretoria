@@ -26,8 +26,8 @@ Needs Python 3.9 or newer.
 Every script takes an optional question. Good ones for `03_agent_loop.py`:
 
 ```
-python 03_agent_loop.py "Who's giving the next BUILD talk, and what have they worked on?"
-python 03_agent_loop.py "What's next in SCALE? Remind me about it."
+python 03_agent_loop.py "Who's giving the next Track 1 talk, and what have they worked on?"
+python 03_agent_loop.py "What's next in Track 2? Remind me about it."
 python 03_agent_loop.py "When is lunch?"
 ```
 
@@ -40,7 +40,7 @@ Set `OFFLINE=1` to skip the web entirely.
 Other examples:
 
 ```
-python 03_agent_loop.py "When is lunch, and what's on in SCALE right after it?"
+python 03_agent_loop.py "When is lunch, and what's on in Track 2 right after it?"
 ```
 
 ## Files
